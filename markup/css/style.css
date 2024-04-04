@@ -1,0 +1,131 @@
+@font-face {
+    font-family: 'Grtsk Tera';
+    src: url('GrtskTera-Semibold.eot');
+    src: local('Grtsk Tera Semibold'), local('GrtskTera-Semibold'),
+        url('../fonts/GrtskTera-Semibold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/GrtskTera-Semibold.woff2') format('woff2'),
+        url('../fonts/GrtskTera-Semibold.woff') format('woff'),
+        url('../fonts/GrtskTera-Semibold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Grtsk Exa';
+    src: url(../fonts/TRYGrtsk-Exa.ttf);
+    font-weight: 400;
+    font-style: normal;
+}
+
+.organization{
+    font-family: 'Grtsk Tera';
+    font-size: 25px;
+    color: #FFFFFF;
+    line-height: 30px;
+    width: 164px;
+    height: 35px;
+    padding: 18px;
+    margin: 0;
+}
+
+.page-header{
+    background-color: #EF3B24;
+    width: 1920px;
+    height: 70px;
+}
+
+body{
+    margin:0;
+    padding: 0;
+}
+
+.sidebar{
+    margin-top: 45px;
+    margin-bottom: 62px;
+    width: 220px;
+    padding-left: 60px;
+    color: #14191A;
+    font-size: 15px;
+    line-height: 18px;
+    font-family: 'Grtsk Exa';
+    background-color: #8A8A8A30;
+    border-radius: 10px;
+}
+
+.circle {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #8C123C;
+    margin-right: 5px;
+    margin-top: 7px;
+}
+
+.dep-circle{
+    background-color: #5B5E5E;
+}
+
+.group-circle{
+    background-color: #9ACA3C;
+}
+
+.division-circle{
+    background-color: #37465B;
+}
+
+.sidebar-input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    height: 34px;
+    border-radius: 5px;
+    color: #8A8C8C;
+    font-size: 15px;
+    line-height: 18px;
+    padding-left: 11px;
+    align-items: center;
+}
+
+.sidebar-item {
+    margin-bottom: 13px;
+    display: block;
+    height: 24px;
+}
+
+h2{
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.input-group{
+    padding-right: 30px;
+    margin-bottom: 30px;
+}
+
+.sidebar h2:first-child {
+    padding-top: 29px;
+}
+
+.sidebar .input-group:last-child label:last-child {
+    padding-bottom: 29px;
+}
+
+.main-footer{
+    background-color: #3B4658;
+    width: 100%;
+    height: 100px;
+}
+
+.sidebar-item input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+.sidebar-item label {
+    padding-left: 5px;
+    vertical-align: middle;
+}
+
