@@ -1,13 +1,26 @@
 package ru.brusnika.model.domain;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import org.hibernate.annotations.NaturalId;
 
-@Data
+@Entity
+@Table(name = "brusnika_table")
 public class Employee {
-    private Position position;
-    private WorkType workType;
-    private Group group;
-    private Department department;
-    private Division division;
-    private Location location;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NaturalId
+    private String name;
+    @Column(name = "Position")
+    private Long positionId;
+    @Column(name = "Type_of_work")
+    private Long workTypeId;
+    @Column(name = "Group")
+    private Long groupId;
+    @Column(name = "Department")
+    private Long departmentId;
+    @Column(name = "Division")
+    private Long divisionId;
+    @Column(name = "Location")
+    private Long locationId;
 }

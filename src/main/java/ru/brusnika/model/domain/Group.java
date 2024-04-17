@@ -1,12 +1,25 @@
 package ru.brusnika.model.domain;
 
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
+
 import java.util.List;
 
-@Data
+@Entity
+@Table(name = "brusnika_table")
 public class Group {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NaturalId
+    private String name;
+    @OneToMany(mappedBy = "groupId")
     private List<Employee> employees;
-    private Department department;
-    private Division division;
-    private Location location;
+    @Column(name = "Department")
+    private Long departmentId;
+    @Column(name = "Division")
+    private Long divisionId;
+    @Column(name = "Location")
+    private Long locationId;
 }

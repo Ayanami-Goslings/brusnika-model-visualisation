@@ -1,8 +1,17 @@
 package ru.brusnika.model.domain;
 
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 
-@Data
+@Entity
+@Table(name = "brusnika_table")
 public class WorkType {
-    private Employee employee;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NaturalId
+    private String name;
+    @Column(name = "Employee")
+    private Long employeeId;
 }
