@@ -2,12 +2,14 @@ package ru.brusnika.model.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.List;
 
 @Entity
 @Table(name = "brusnika_table")
+@Data
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

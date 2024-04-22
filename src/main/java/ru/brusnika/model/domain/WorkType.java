@@ -6,6 +6,7 @@ import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "brusnika_table")
+@Data
 public class WorkType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

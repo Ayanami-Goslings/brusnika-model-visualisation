@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "brusnika_table")
+@Data
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
