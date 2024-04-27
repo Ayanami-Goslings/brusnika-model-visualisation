@@ -18,7 +18,7 @@
 }
 
 .organization{
-    font-family: 'Grtsk Tera';
+    font-family:'Grtsk Tera';
     font-size: 25px;
     color: #FFFFFF;
     line-height: 30px;
@@ -30,13 +30,17 @@
 
 .page-header{
     background-color: #EF3B24;
-    width: 1920px;
+    width: 100%;
     height: 70px;
 }
 
 body{
     margin:0;
     padding: 0;
+    font-family: 'Grtsk Exa' ;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18px;
 }
 
 .sidebar{
@@ -45,11 +49,9 @@ body{
     width: 220px;
     padding-left: 60px;
     color: #14191A;
-    font-size: 15px;
-    line-height: 18px;
-    font-family: 'Grtsk Exa';
     background-color: #8A8A8A30;
     border-radius: 10px;
+    font-weight: 400;
 }
 
 .circle {
@@ -129,3 +131,13 @@ h2{
     vertical-align: middle;
 }
 
+.main-content{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main-text{
+    font-family: 'Grtsk Tera';
+    font-size: 25px;
+    line-height: 30px;
+}
