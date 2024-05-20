@@ -2,12 +2,12 @@ import { calculateCoordinates } from "../utils.js";
 
 function drawGraph() {
     const svg = d3.select("svg");
-    const centerX = 810;
+    const centerX = 775;
     const centerY = 502;
     const radius = 300;
     const rectWidth = 208;
     const rectHeight = 50;
-    const locations = ["Екатеринбург", "Санкт-Петербург", "Уфа", "Пермь", "Казань", "Омск", "Сургут", "Москва", "штаб", "Томск", "Новосибирск", "Курган"];
+    const locations = ["Екатеринбург", "Тюмень", "Уфа", "Пермь", "Казань", "Омск", "Сургут", "Москва", "штаб", "Томск", "Новосибирск", "Курган"];
 
     locations.forEach((location, index) => {
         const { x, y } = calculateCoordinates(centerX, centerY, radius, index, locations.length);
