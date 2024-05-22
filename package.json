@@ -4,7 +4,7 @@
   "description": "Визуализация организационно-функциональной модели ООО \"БРУСНИКА\"",
   "main": "index.js",
   "scripts": {
-    "start": "http-server markup -c-1"
+    "start": "http-server markup"
   },
   "author": "",
   "license": "ISC",
