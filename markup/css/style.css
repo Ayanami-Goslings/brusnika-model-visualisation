@@ -141,3 +141,12 @@ h2{
     font-size: 25px;
     line-height: 30px;
 }
+
+.location-rect:hover{
+    
+    cursor: pointer;
+}
+
+.location-text:hover{
+    cursor: pointer;
+}
