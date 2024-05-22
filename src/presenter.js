@@ -1,7 +1,7 @@
-import {drawLocationView} from "./view/location-view.js"
-import {drawMainView} from "./view/main-view.js"
+import { LocationView } from "./view/location-view.js";
+import { MainView } from "./view/main-view.js";
 
-class Presenter {
+export class Presenter {
     #currentView = null;
     #currentLocation = null;
 
@@ -16,13 +16,15 @@ class Presenter {
 
     showMainView() {
         this.#currentView = "main";
-        drawMainView(this);
+        const mainView = new MainView(this);
+        mainView.drawMainView();
     }
 
     showLocationView(location) {
         this.#currentView = "location";
         this.#currentLocation = location;
-        drawLocationView(this, location);
+        const locationView = new LocationView(this, location);
+        locationView.drawLocationView();
     }
 
     onLocationClick(location) {
@@ -34,4 +36,3 @@ class Presenter {
     }
 }
 
-const presenter = new Presenter();
