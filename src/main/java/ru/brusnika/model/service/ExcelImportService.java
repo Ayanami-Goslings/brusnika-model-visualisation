@@ -1,5 +1,6 @@
 package ru.brusnika.model.service;
 
+import ru.brusnika.model.domain.DTO.NodeDTO;
 import ru.brusnika.model.domain.Edge;
 import ru.brusnika.model.domain.Node;
 import ru.brusnika.model.repository.EdgeRepository;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ExcelImportService {
@@ -28,24 +29,38 @@ public class ExcelImportService {
              Workbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheetAt(0);
-            for (Row row : sheet) {
-                String location = getCellValue(row, 0);
-                String subdivision = getCellValue(row, 1);
-                String department = getCellValue(row, 2);
-                String group = getCellValue(row, 3);
-                String employee = getCellValue(row, 4);
+            Map<String, Node> createdNodes = new HashMap<>();
+            long currentId = 1;
 
-                Node locationNode = addNode(location, "Location");
-                Node divisionNode = addNode(subdivision, "Subdivision");
-                Node departmentNode = addNode(department, "Department");
-                Node groupNode = addNode(group, "Group");
-                Node employeeNode = addNode(employee, "Employee");
+            for (Row row : sheet) {
+                Node locationNode = addNode(row, 0, "Location", createdNodes, currentId++);
+                Node divisionNode = addNode(row, 1, "Subdivision", createdNodes, currentId++);
+                Node departmentNode = addNode(row, 2, "Department", createdNodes, currentId++);
+                Node groupNode = addNode(row, 3, "Group", createdNodes, currentId++);
+                Node employeeNode = addNode(row, 4, "Employee", createdNodes, currentId++);
 
                 addEdge(locationNode, divisionNode);
                 addEdge(divisionNode, departmentNode);
                 addEdge(departmentNode, groupNode);
                 addEdge(groupNode, employeeNode);
             }
+        }
+    }
+
+    private Node addNode(Row row, int cellIndex, String type, Map<String, Node> createdNodes, long id) {
+        String name = getCellValue(row, cellIndex);
+        if (name == null || name.isEmpty()) return null;
+
+        String uniqueKey = name + "_" + id;
+        if (createdNodes.containsKey(uniqueKey)) {
+            return createdNodes.get(uniqueKey);
+        } else {
+            Node newNode = new Node();
+            newNode.setId(id);
+            newNode.setName(name);
+            newNode.setType(type);
+            createdNodes.put(uniqueKey, newNode);
+            return nodeRepository.save(newNode);
         }
     }
 
@@ -75,24 +90,31 @@ public class ExcelImportService {
         }
     }
 
-    private Node addNode(String name, String type) {
-        if (name == null || name.isEmpty()) return null;
-        List<Node> existingNodes = nodeRepository.findByNameAndType(name, type);
-        if (!existingNodes.isEmpty()) {
-            return existingNodes.get(0);
-        } else {
-            Node newNode = new Node();
-            newNode.setName(name);
-            newNode.setType(type);
-            return nodeRepository.save(newNode);
-        }
-    }
-
     private void addEdge(Node source, Node target) {
         if (source == null || target == null) return;
         Edge edge = new Edge();
         edge.setSource(source);
         edge.setTarget(target);
         edgeRepository.save(edge);
+    }
+
+    public List<NodeDTO> getAllNodesWithEdges() {
+        List<Node> nodes = nodeRepository.findAll();
+        List<Edge> edges = edgeRepository.findAll();
+
+        Map<Long, List<NodeDTO>> nodeTargetsMap = new HashMap<>();
+
+        for (Edge edge : edges) {
+            NodeDTO targetDTO = new NodeDTO(edge.getTarget().getId(), edge.getTarget().getName(), edge.getTarget().getType());
+            nodeTargetsMap.computeIfAbsent(edge.getSource().getId(), k -> new ArrayList<>()).add(targetDTO);
+        }
+
+        List<NodeDTO> nodeDTOs = new ArrayList<>();
+        for (Node node : nodes) {
+            List<NodeDTO> targetDTOs = nodeTargetsMap.getOrDefault(node.getId(), new ArrayList<>());
+            NodeDTO nodeDTO = new NodeDTO(node.getId(), node.getName(), node.getType(), targetDTOs);
+            nodeDTOs.add(nodeDTO);
+        }
+        return nodeDTOs;
     }
 }
