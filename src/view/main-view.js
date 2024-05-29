@@ -14,7 +14,7 @@ export class MainView {
         const radius = 300;
         const rectWidth = 208;
         const rectHeight = 50;
-        const locations = ["Екатеринбург", "Тюмень", "Уфа", "Пермь", "Казань", "Омск", "Сургут", "Москва", "штаб", "Томск", "Новосибирск", "Курган"];
+        const locations = ["Екатеринбург", "Тюмень", "Уфа", "Пермь", "Казань", "Омск", "Сургут", "Москва", "штаб","Томск", "Новосибирск", "Курган"];
 
         locations.forEach((location, index) => {
             const { x, y } = calculateCoordinates(centerX, centerY, radius, index, locations.length);
