@@ -10,7 +10,7 @@ export class LocationView {
         const centerX = 775;
         const centerY = 502;
 
-        this.drawLocationRectangle(svg, centerX, 50, this.location);
+        this.drawLocationRectangle(svg, centerX, centerY, this.location);
     }
     
         drawLocationRectangle(svg, x, y, location) {
