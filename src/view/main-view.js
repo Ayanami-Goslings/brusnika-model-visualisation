@@ -1,13 +1,15 @@
 import { calculateCoordinates } from "../utils.js";
+import { BaseView } from "./base-view.js";
 
-export class MainView {
+export class MainView extends BaseView{
     constructor(presenter) {
+        super(presenter);
         this.presenter = presenter;
     }
 
     drawMainView() {
         const content = document.querySelector(".content");
-        content.innerHTML = '<svg width="1550" height="1004"></svg>';
+        content.innerHTML = '<svg width="1550" height="100%"></svg>';
         const svg = d3.select("svg");
         const centerX = 775;
         const centerY = 502;
@@ -27,15 +29,6 @@ export class MainView {
         this.drawMainText(svg, centerX, centerY);
     }
 
-    drawLine(svg, x1, y1, x2, y2) {
-        svg.append("line")
-            .attr("x1", x1)
-            .attr("y1", y1)
-            .attr("x2", x2)
-            .attr("y2", y2)
-            .attr("stroke", "#000000")
-            .attr("stroke-width", 2);
-    }
 
     drawLocationText(svg, x, y, location, rect) {
         svg.append("text")
