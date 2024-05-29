@@ -23,7 +23,22 @@ export class Presenter {
     showLocationView(location) {
         this.#currentView = "location";
         this.#currentLocation = location;
-        const locationView = new LocationView(this, location);
+        const elements = [
+            { id: 238, name: "Персей", type: "Subdivision" },
+            { id: 239, name: "Финляндия", type: "Department" },
+            { id: 240, name: "Марс", type: "Group" },
+            { id: 238, name: "Персей", type: "Subdivision" },
+            { id: 238, name: "Персей", type: "Subdivision" },
+            { id: 238, name: "Персей", type: "Group"},
+            { id: 238, name: "Персей", type: "Subdivision" },
+            { id: 238, name: "Персей", type: "Subdivision" },
+            { id: 238, name: "Персей", type: "Subdivision" },
+            { id: 238, name: "Персей", type: "Subdivision" },
+        ];
+        elements.forEach((element, index) => {
+            element.index = index;
+        });
+        const locationView = new LocationView(this, location, elements);
         locationView.drawLocationView();
     }
 
