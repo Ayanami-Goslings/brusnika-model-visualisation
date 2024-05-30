@@ -9,7 +9,7 @@ export class LocationView extends BaseView {
 
     drawLocationView() {
         const content = document.querySelector(".content");
-        content.innerHTML = '<svg width="1550" height="1004"></svg>';
+        content.innerHTML = '<svg width="1550" height="100%"></svg>';
         const svg = d3.select("svg");
         const centerX = 775;
         const centerY = 502;
