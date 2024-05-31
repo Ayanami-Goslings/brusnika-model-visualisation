@@ -17,7 +17,7 @@ export class LocationView extends BaseView {
 
         this.drawLinesFromLocationToElements(svg, centerX, centerY, radius, this.elements);
         this.drawLocationRectangle(svg, centerX, centerY, this.location);
-        this.drawElementsInCircle(svg, centerX, centerY, radius, this.elements, (element) => this.presenter.onLocationClick(element));
+        this.drawElementsInCircle(svg, centerX, centerY, radius, this.elements, () => {});
     }
 
     drawLinesFromLocationToElements(svg, centerX, centerY, radius, elements) {
