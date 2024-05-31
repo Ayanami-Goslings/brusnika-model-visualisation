@@ -16,19 +16,17 @@ export class MainView extends BaseView{
         const radius = 300;
         const rectWidth = 208;
         const rectHeight = 50;
-        const locations = ["Екатеринбург", "Тюмень", "Уфа", "Пермь", "Казань", "Омск", "Сургут", "Москва", "штаб","Томск", "Новосибирск", "Курган"];
+        const locations = this.presenter.locations;
 
         locations.forEach((location, index) => {
             const { x, y } = calculateCoordinates(centerX, centerY, radius, index, locations.length);
-
             this.drawLine(svg, centerX, centerY, x, y);
-            this.drawLocationRectangle(svg, x, y, location);
+            this.drawLocationRectangle(svg, x, y, location.name);
         });
 
         this.drawMainRectangle(svg, centerX, centerY, rectWidth, rectHeight);
         this.drawMainText(svg, centerX, centerY);
     }
-
 
     drawLocationText(svg, x, y, location, rect) {
         svg.append("text")
