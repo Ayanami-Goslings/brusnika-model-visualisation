@@ -1,5 +1,6 @@
 import { BaseView } from "./base-view.js";
 import { calculateCoordinates } from "../utils.js";
+
 export class LocationView extends BaseView {
     constructor(presenter, location, elements) {
         super(presenter);
@@ -14,6 +15,7 @@ export class LocationView extends BaseView {
         const centerX = 775;
         const centerY = 502;
         const radius = 400;
+        console.log("Elements to draw:", this.elements);
 
         this.drawLinesFromLocationToElements(svg, centerX, centerY, radius, this.elements);
         this.drawLocationRectangle(svg, centerX, centerY, this.location);
@@ -21,7 +23,6 @@ export class LocationView extends BaseView {
     }
 
     drawLinesFromLocationToElements(svg, centerX, centerY, radius, elements) {
-    
         elements.forEach(element => {
             const elementCoords = calculateCoordinates(centerX, centerY, radius, element.index, elements.length);
             this.drawLine(svg, centerX, centerY, elementCoords.x, elementCoords.y);
