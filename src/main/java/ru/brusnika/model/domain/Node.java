@@ -11,6 +11,25 @@ public class Node {
     private String name;
     private String type;
 
+    private String position;
+    private String workType;
+
+    public Node(){}
+
+    public Node(Long id, String name, String type) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+    }
+
+    public Node(Long id, String name, String type, String position, String workType) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.position = position;
+        this.workType = workType;
+    }
+
     public Long getId() {
         return id;
     }
@@ -33,5 +52,21 @@ public class Node {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getWorkType() {
+        return workType;
+    }
+
+    public void setWorkType(String workType) {
+        this.workType = workType;
     }
 }

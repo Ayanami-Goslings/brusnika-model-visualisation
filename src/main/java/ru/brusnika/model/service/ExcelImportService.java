@@ -33,11 +33,12 @@ public class ExcelImportService {
             long currentId = 1;
 
             for (Row row : sheet) {
-                Node locationNode = addNode(row, 0, "Location", createdNodes, currentId++);
-                Node divisionNode = addNode(row, 1, "Subdivision", createdNodes, currentId++);
-                Node departmentNode = addNode(row, 2, "Department", createdNodes, currentId++);
-                Node groupNode = addNode(row, 3, "Group", createdNodes, currentId++);
-                Node employeeNode = addNode(row, 4, "Employee", createdNodes, currentId++);
+                Node locationNode = addNode(row, 0, "Location", createdNodes, currentId++, null, null);
+                Node divisionNode = addNode(row, 1, "Subdivision", createdNodes, currentId++, null, null);
+                Node departmentNode = addNode(row, 2, "Department", createdNodes, currentId++, null, null);
+                Node groupNode = addNode(row, 3, "Group", createdNodes, currentId++, null, null);
+                Node employeeNode = addNode(row, 5, "Employee", createdNodes, currentId++,
+                        getCellValue(row, 4), getCellValue(row, 6));
 
                 addEdge(locationNode, divisionNode);
                 addEdge(divisionNode, departmentNode);
@@ -47,7 +48,8 @@ public class ExcelImportService {
         }
     }
 
-    private Node addNode(Row row, int cellIndex, String type, Map<String, Node> createdNodes, long id) {
+    private Node addNode(Row row, int cellIndex, String type, Map<String, Node> createdNodes, long id,
+                         String position, String workType) {
         String name = getCellValue(row, cellIndex);
         if (name == null || name.isEmpty()) return null;
 
@@ -59,6 +61,10 @@ public class ExcelImportService {
             newNode.setId(id);
             newNode.setName(name);
             newNode.setType(type);
+            if ("Employee".equals(type)) {
+                newNode.setPosition(position);
+                newNode.setWorkType(workType);
+            }
             createdNodes.put(uniqueKey, newNode);
             return nodeRepository.save(newNode);
         }
@@ -102,19 +108,21 @@ public class ExcelImportService {
         List<Node> nodes = nodeRepository.findAll();
         List<Edge> edges = edgeRepository.findAll();
 
-        Map<Long, List<NodeDTO>> nodeTargetsMap = new HashMap<>();
+        Map<Long, NodeDTO> nodeDTOMap = new HashMap<>();
+        for (Node node : nodes) {
+            if ("Employee".equals(node.getType())) {
+                nodeDTOMap.put(node.getId(), new NodeDTO(node.getId(), node.getName(), node.getType(), node.getPosition(), node.getWorkType()));
+            } else {
+                nodeDTOMap.put(node.getId(), new NodeDTO(node.getId(), node.getName(), node.getType()));
+            }
+        }
 
         for (Edge edge : edges) {
-            NodeDTO targetDTO = new NodeDTO(edge.getTarget().getId(), edge.getTarget().getName(), edge.getTarget().getType());
-            nodeTargetsMap.computeIfAbsent(edge.getSource().getId(), k -> new ArrayList<>()).add(targetDTO);
+            NodeDTO sourceDTO = nodeDTOMap.get(edge.getSource().getId());
+            NodeDTO targetDTO = nodeDTOMap.get(edge.getTarget().getId());
+            sourceDTO.setTarget(targetDTO);
         }
 
-        List<NodeDTO> nodeDTOs = new ArrayList<>();
-        for (Node node : nodes) {
-            List<NodeDTO> targetDTOs = nodeTargetsMap.getOrDefault(node.getId(), new ArrayList<>());
-            NodeDTO nodeDTO = new NodeDTO(node.getId(), node.getName(), node.getType(), targetDTOs);
-            nodeDTOs.add(nodeDTO);
-        }
-        return nodeDTOs;
+        return new ArrayList<>(nodeDTOMap.values());
     }
 }
