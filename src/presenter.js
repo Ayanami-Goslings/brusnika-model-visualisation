@@ -1,16 +1,28 @@
 import { LocationView } from "./view/location-view.js";
 import { MainView } from "./view/main-view.js";
+import {fetchNodes, fetchNodesWithEdges, findDescendants} from "./api.js"
 
 export class Presenter {
     #currentView = null;
     #currentLocation = null;
+    #locations = [];
+    #nodesWithEdges = [];
 
     constructor() {
         this.#currentView = "main";
         this.init();
     }
 
-    init() {
+    get locations() {
+        return this.#locations;
+    }
+
+    get nodesWithEdges() {
+        return this.#nodesWithEdges;
+    }
+
+    async init() {
+        this.#locations = await fetchNodes();
         this.showMainView();
     }
 
@@ -20,7 +32,7 @@ export class Presenter {
         mainView.drawMainView();
     }
 
-    showLocationView(location) {
+    async showLocationView(location) {
         this.#currentView = "location";
         this.#currentLocation = location;
         const elements = [
