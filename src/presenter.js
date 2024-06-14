@@ -56,12 +56,16 @@ export class Presenter {
                     children.set(node.target.name, node.target);
                 }
                 return; // Stop if a subdivision is found
-            } else if (depth === 1 && node.target.type === 'Department') {
+            }
+
+            if (depth === 1 && node.target.type === 'Department') {
                 if (!children.has(node.target.name)) {
                     children.set(node.target.name, node.target);
                 }
                 return; // Stop if a department is found
-            } else if (depth === 2 && node.target.type === 'Group') {
+            }
+
+            if (depth === 2 && node.target.type === 'Group') {
                 if (!children.has(node.target.name)) {
                     children.set(node.target.name, node.target);
                 }
@@ -69,7 +73,7 @@ export class Presenter {
             }
 
             // Continue recursion only if no subdivision/department/group was added
-            findRecursive(node.target, depth);
+            findRecursive(node.target, depth + 1);
         };
 
         this.#nodesWithEdges.forEach(node => {
