@@ -46,34 +46,27 @@ export class Presenter {
     }
 
     findChildren(location) {
-        const children = new Map();
+        const childrenMap = new Map();
 
-        const findRecursive = (node, depth = 0) => {
+        const findRecursive = (node) => {
             if (!node.target) return;
 
-            if (depth === 0 && node.target.type === 'Subdivision') {
-                if (!children.has(node.target.name)) {
-                    children.set(node.target.name, node.target);
-                }
-                return; // Stop if a subdivision is found
+            if (node.target.type === 'Subdivision') {
+                childrenMap.set(node.target.name, node.target);
+                return;
             }
 
-            if (depth === 1 && node.target.type === 'Department') {
-                if (!children.has(node.target.name)) {
-                    children.set(node.target.name, node.target);
-                }
-                return; // Stop if a department is found
+            if (node.target.type === 'Department' && !childrenMap.has(node.target.name)) {
+                childrenMap.set(node.target.name, node.target);
+                return;
             }
 
-            if (depth === 2 && node.target.type === 'Group') {
-                if (!children.has(node.target.name)) {
-                    children.set(node.target.name, node.target);
-                }
-                return; // Stop if a group is found
+            if (node.target.type === 'Group' && !childrenMap.has(node.target.name)) {
+                childrenMap.set(node.target.name, node.target);
+                return;
             }
 
-            // Continue recursion only if no subdivision/department/group was added
-            findRecursive(node.target, depth + 1);
+            findRecursive(node.target);
         };
 
         this.#nodesWithEdges.forEach(node => {
@@ -82,7 +75,7 @@ export class Presenter {
             }
         });
 
-        return Array.from(children.values());
+        return Array.from(childrenMap.values());
     }
 
     onLocationClick(location) {
