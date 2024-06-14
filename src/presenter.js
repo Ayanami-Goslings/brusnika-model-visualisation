@@ -1,6 +1,6 @@
 import { LocationView } from "./view/location-view.js";
 import { MainView } from "./view/main-view.js";
-import {fetchNodes, fetchNodesWithEdges, findDescendants} from "./api.js"
+import { fetchNodes, fetchNodesWithEdges } from "./api.js";
 
 export class Presenter {
     #currentView = null;
@@ -23,6 +23,7 @@ export class Presenter {
 
     async init() {
         this.#locations = await fetchNodes();
+        this.#nodesWithEdges = await fetchNodesWithEdges();
         this.showMainView();
     }
 
@@ -35,23 +36,46 @@ export class Presenter {
     async showLocationView(location) {
         this.#currentView = "location";
         this.#currentLocation = location;
-        const elements = [
-            { id: 238, name: "Персей", type: "Subdivision" },
-            { id: 239, name: "Финляндия", type: "Department" },
-            { id: 240, name: "Марс", type: "Group" },
-            { id: 238, name: "Персей", type: "Subdivision" },
-            { id: 238, name: "Персей", type: "Subdivision" },
-            { id: 238, name: "Персей", type: "Group"},
-            { id: 238, name: "Персей", type: "Subdivision" },
-            { id: 238, name: "Персей", type: "Subdivision" },
-            { id: 238, name: "Персей", type: "Subdivision" },
-            { id: 238, name: "Персей", type: "Subdivision" },
-        ];
-        elements.forEach((element, index) => {
-            element.index = index;
-        });
-        const locationView = new LocationView(this, location, elements);
+
+        // Найти дочерние элементы для выбранной локации
+        const children = this.findChildren(location);
+        children.forEach((child, index) => child.index = index);
+
+        const locationView = new LocationView(this, location, children);
         locationView.drawLocationView();
+    }
+
+    findChildren(location) {
+        const childrenMap = new Map();
+
+        const findRecursive = (node) => {
+            if (!node.target) return;
+
+            if (node.target.type === 'Subdivision') {
+                childrenMap.set(node.target.name, node.target);
+                return;
+            }
+
+            if (node.target.type === 'Department' && !childrenMap.has(node.target.name)) {
+                childrenMap.set(node.target.name, node.target);
+                return;
+            }
+
+            if (node.target.type === 'Group' && !childrenMap.has(node.target.name)) {
+                childrenMap.set(node.target.name, node.target);
+                return;
+            }
+
+            findRecursive(node.target);
+        };
+
+        this.#nodesWithEdges.forEach(node => {
+            if (node.name === location) {
+                findRecursive(node);
+            }
+        });
+
+        return Array.from(childrenMap.values());
     }
 
     onLocationClick(location) {
@@ -62,4 +86,3 @@ export class Presenter {
         this.showMainView();
     }
 }
-

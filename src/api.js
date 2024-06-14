@@ -11,17 +11,6 @@ export async function fetchNodes() {
 export async function fetchNodesWithEdges() {
     const response = await fetch('../data/nodesWithEdges.json');
     const nodesWithEdges = await response.json();
-    console.log(nodesWithEdges);
+    
     return nodesWithEdges;
-}
-
-export function findDescendants(locationName, nodesWithEdges) {
-    const location = nodesWithEdges.find(node => node.name === locationName);
-    console.log(location);
-    if (location && location.targets) {
-        console.log(location);
-        return location.targets;
-    }
-    console.log("я отработал");
-    return [];
 }
