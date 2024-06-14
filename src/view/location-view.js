@@ -15,7 +15,6 @@ export class LocationView extends BaseView {
         const centerX = 775;
         const centerY = 502;
         const radius = 400;
-        console.log("Elements to draw:", this.elements);
 
         this.drawLinesFromLocationToElements(svg, centerX, centerY, radius, this.elements);
         this.drawLocationRectangle(svg, centerX, centerY, this.location);
