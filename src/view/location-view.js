@@ -23,8 +23,8 @@ export class LocationView extends BaseView {
     }
 
     drawLinesFromLocationToElements(svg, centerX, centerY, radius, elements) {
-        elements.forEach(element => {
-            const elementCoords = calculateCoordinates(centerX, centerY, radius, element.index, elements.length);
+        elements.forEach((element, index) => {
+            const elementCoords = calculateCoordinates(centerX, centerY, radius, index, elements.length);
             this.drawLine(svg, centerX, centerY, elementCoords.x, elementCoords.y);
         });
     }

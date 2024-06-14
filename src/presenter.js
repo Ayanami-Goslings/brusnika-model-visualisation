@@ -36,44 +36,49 @@ export class Presenter {
     async showLocationView(location) {
         this.#currentView = "location";
         this.#currentLocation = location;
-    
-        const locationNodes = this.#nodesWithEdges.filter(node => node.name === location);
-    
-        let elements = [];
-        for (const locationNode of locationNodes) {
-            const locationElements = this.getElementsFromLocation(locationNode);
-            elements.push(...locationElements.map(target => target.name)); // Собираем имена подразделений
-        }
-    
-        // Фильтрация уникальных имен подразделений
-        elements = elements.filter((name, index, self) => self.indexOf(name) === index);
-        
-        // Преобразуем уникальные имена обратно в объекты
-        elements = elements.map(name => ({ name }));
-    
-        elements.forEach((element, index) => {
-            element.index = index;
-        });
-    
-        const locationView = new LocationView(this, location, elements);
+
+        // Найти дочерние элементы для выбранной локации
+        const children = this.findChildren(location);
+        children.forEach((child, index) => child.index = index);
+
+        const locationView = new LocationView(this, location, children);
         locationView.drawLocationView();
     }
-    
-    getElementsFromLocation(locationNode) {
-        const elements = [];
-    
-        const traverse = (node) => {
-            if (node && node.targets) {
-                node.targets.forEach(target => {
-                    elements.push(target);
-                    traverse(target); // Рекурсивный вызов для обхода дальше
-                });
+
+    findChildren(location) {
+        const children = new Map();
+
+        const findRecursive = (node, depth = 0) => {
+            if (!node.target) return;
+
+            if (depth === 0 && node.target.type === 'Subdivision') {
+                if (!children.has(node.target.name)) {
+                    children.set(node.target.name, node.target);
+                }
+                return; // Stop if a subdivision is found
+            } else if (depth === 1 && node.target.type === 'Department') {
+                if (!children.has(node.target.name)) {
+                    children.set(node.target.name, node.target);
+                }
+                return; // Stop if a department is found
+            } else if (depth === 2 && node.target.type === 'Group') {
+                if (!children.has(node.target.name)) {
+                    children.set(node.target.name, node.target);
+                }
+                return; // Stop if a group is found
             }
+
+            // Continue recursion only if no subdivision/department/group was added
+            findRecursive(node.target, depth);
         };
-    
-        traverse(locationNode);
-    
-        return elements;
+
+        this.#nodesWithEdges.forEach(node => {
+            if (node.name === location) {
+                findRecursive(node);
+            }
+        });
+
+        return Array.from(children.values());
     }
 
     onLocationClick(location) {
